@@ -61,6 +61,120 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: block;
         }
+        /* Hero image hotspot system */
+        .hero-wrapper {
+            text-align: center;
+        }
+        .hero-container {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 30px;
+        }
+        .hero-container > img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            max-height: 500px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .plant-hotspot {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            cursor: pointer;
+        }
+        .hotspot-marker {
+            width: 16px;
+            height: 16px;
+            background-color: rgba(255,255,255,0.9);
+            border: 2.5px solid #27ae60;
+            border-radius: 50%;
+            animation: hotspot-pulse 2s infinite;
+        }
+        @keyframes hotspot-pulse {
+            0%   { box-shadow: 0 0 0 0 rgba(39,174,96,0.7); }
+            70%  { box-shadow: 0 0 0 9px rgba(39,174,96,0); }
+            100% { box-shadow: 0 0 0 0 rgba(39,174,96,0); }
+        }
+        .hotspot-card {
+            display: none;
+            position: absolute;
+            bottom: calc(100% + 10px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            border-radius: 8px;
+            padding: 12px 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            width: 175px;
+            text-align: center;
+            border: 1px solid #d1e0d7;
+            z-index: 100;
+        }
+        .hotspot-card.card-visible {
+            display: block;
+        }
+        .hotspot-card::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 7px solid transparent;
+            border-top-color: white;
+        }
+        .hotspot-card h4 {
+            margin: 0 0 4px 0;
+            color: #1e5631;
+            font-size: 0.88em;
+        }
+        .hotspot-card p {
+            margin: 0 0 8px 0;
+            color: #555;
+            font-size: 0.78em;
+            line-height: 1.4;
+        }
+        .hotspot-card a {
+            display: inline-block;
+            color: white;
+            background-color: #27ae60;
+            text-decoration: none;
+            font-size: 0.78em;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+        .hotspot-card a:hover {
+            background-color: #1e8449;
+        }
+        /* Card below — for hotspots near the top of the image */
+        .hotspot-card.card-below {
+            bottom: auto;
+            top: calc(100% + 10px);
+        }
+        .hotspot-card.card-below::after {
+            top: auto;
+            bottom: 100%;
+            border-top-color: transparent;
+            border-bottom-color: white;
+        }
+        /* Card to the left — for hotspots near the right edge */
+        .hotspot-card.card-left {
+            left: auto;
+            right: calc(100% + 10px);
+            bottom: 50%;
+            transform: translateY(50%);
+        }
+        .hotspot-card.card-left::after {
+            top: 50%;
+            left: 100%;
+            bottom: auto;
+            transform: translateY(-50%);
+            border-top-color: transparent;
+            border-left-color: white;
+        }
     </style>
 </head>
 <body>
@@ -69,8 +183,52 @@
 
     <div class="garden-group" style="background-color: #eaf2ee; padding: 30px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #d1e0d7;">
         <h2 style="text-align: center; color: #1e5631; border-bottom: none; font-size: 1.8em; margin-top: 0; margin-bottom: 20px;">The lawn at the bottom of the garden</h2>
-        <img src="images/the_lawn_at_the_bottom_of_the_garden.jpg" alt="The lawn at the bottom of the garden" style="max-width: 100%; height: auto; max-height: 500px; border-radius: 8px; margin: 0 auto 30px auto; display: block; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-    <div class="plant-card">
+        <div class="hero-wrapper">
+            <div class="hero-container">
+                <img src="images/the_lawn_at_the_bottom_of_the_garden.jpg" alt="The lawn at the bottom of the garden">
+
+                <!-- Rowan Tree — tall deciduous tree, upper centre background -->
+                <div class="plant-hotspot" style="left: 52%; top: 18%;">
+                    <div class="hotspot-marker"></div>
+                    <div class="hotspot-card card-below">
+                        <h4>Rowan Tree</h4>
+                        <p>Sorbus aucuparia &mdash; Native tree prized for red autumn berries</p>
+                        <a href="#rowan">View details &darr;</a>
+                    </div>
+                </div>
+
+                <!-- Ornamental Cherry — reddish/bronze foliage, left-centre -->
+                <div class="plant-hotspot" style="left: 38%; top: 33%;">
+                    <div class="hotspot-marker"></div>
+                    <div class="hotspot-card">
+                        <h4>Ornamental Cherry</h4>
+                        <p>Prunus &mdash; Spectacular spring blossom &amp; distinctive bark</p>
+                        <a href="#ornamental-cherry">View details &darr;</a>
+                    </div>
+                </div>
+
+                <!-- Yellow Azalea — vivid yellow-orange flowers, centre-right -->
+                <div class="plant-hotspot" style="left: 65%; top: 48%;">
+                    <div class="hotspot-marker"></div>
+                    <div class="hotspot-card">
+                        <h4>Yellow Azalea</h4>
+                        <p>Rhododendron luteum &mdash; Fragrant yellow flowers in late spring</p>
+                        <a href="#azalea">View details &darr;</a>
+                    </div>
+                </div>
+
+                <!-- Weigela — pink/red flowering shrub, far right -->
+                <div class="plant-hotspot" style="left: 87%; top: 52%;">
+                    <div class="hotspot-marker"></div>
+                    <div class="hotspot-card card-left">
+                        <h4>Weigela</h4>
+                        <p>Hardy deciduous shrub &mdash; Vibrant red-pink spring flowers</p>
+                        <a href="#weigela">View details &darr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="plant-card" id="weigela">
         <h2>Weigela</h2>
         <img src="images/weigela_in_bloom.jpg" alt="Weigela in bloom" class="plant-img">
         <h3>Pruning Weigela</h3>
@@ -86,7 +244,7 @@
         </ul>
     </div>
 
-    <div class="plant-card">
+    <div class="plant-card" id="azalea">
         <h2>Deciduous Azalea (Yellow Azalea / Rhododendron luteum)</h2>
         <img src="images/yellow_azalea.jpg" alt="Yellow Azalea" class="plant-img">
         <h3>Overview</h3>
@@ -109,7 +267,7 @@
     </div>
 
 
-    <div class="plant-card">
+    <div class="plant-card" id="ornamental-cherry">
         <h2>Ornamental Cherry Tree (Prunus)</h2>
         <img src="images/ornamental_cherry_tree.jpg" alt="Ornamental Cherry Tree" class="plant-img">
         
@@ -133,7 +291,7 @@
 
 
 
-    <div class="plant-card">
+    <div class="plant-card" id="hebe">
         <h2>Hebe (Shrubby Veronica)</h2>
         <img src="images/hebe_shrub.jpg" alt="Hebe Shrub" class="plant-img">
         
@@ -157,7 +315,7 @@
 
 
 
-    <div class="plant-card">
+    <div class="plant-card" id="plum">
         <h2>Plum Tree (Prunus domestica)</h2>
         <img src="images/plum_tree.jpg" alt="Plum Tree" class="plant-img">
         
@@ -181,7 +339,7 @@
 
 
 
-    <div class="plant-card">
+    <div class="plant-card" id="orange-ball">
         <h2>Orange Ball Tree (Buddleja globosa)</h2>
         <img src="images/orange_ball_tree_in_the_garden.jpg" alt="Orange Ball Tree in the garden" class="plant-img">
         <h3>Overview</h3>
@@ -204,7 +362,7 @@
 
 
 
-    <div class="plant-card">
+    <div class="plant-card" id="rowan">
         <h2>Rowan Tree (Mountain Ash / Sorbus aucuparia)</h2>
         <img src="images/rowan_tree.jpg" alt="Rowan Tree" class="plant-img">
         <h3>Overview</h3>
@@ -226,5 +384,29 @@
     </div>
 
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.plant-hotspot').forEach(function (hotspot) {
+                var timer;
+                var card = hotspot.querySelector('.hotspot-card');
+
+                function show() {
+                    clearTimeout(timer);
+                    card.classList.add('card-visible');
+                }
+
+                function hide() {
+                    timer = setTimeout(function () {
+                        card.classList.remove('card-visible');
+                    }, 200);
+                }
+
+                hotspot.addEventListener('mouseenter', show);
+                hotspot.addEventListener('mouseleave', hide);
+                card.addEventListener('mouseenter', show);
+                card.addEventListener('mouseleave', hide);
+            });
+        });
+    </script>
 </body>
 </html>
