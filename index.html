@@ -61,7 +61,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             display: block;
         }
-        /* Hero image hotspot system */
+        /* Always-visible plant label system */
         .hero-wrapper {
             text-align: center;
         }
@@ -79,101 +79,93 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
-        .plant-hotspot {
+        .garden-label {
             position: absolute;
-            transform: translate(-50%, -50%);
+            transform: translateY(-50%);
             z-index: 10;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
-        .hotspot-marker {
-            width: 16px;
-            height: 16px;
-            background-color: rgba(255,255,255,0.9);
-            border: 2.5px solid #27ae60;
+        .garden-label.label-flip {
+            flex-direction: row-reverse;
+        }
+        .label-dot {
+            flex-shrink: 0;
+            width: 13px;
+            height: 13px;
+            background: rgba(255,255,255,0.88);
+            border: 2px solid #27ae60;
             border-radius: 50%;
-            animation: hotspot-pulse 2s infinite;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.5);
         }
-        @keyframes hotspot-pulse {
-            0%   { box-shadow: 0 0 0 0 rgba(39,174,96,0.7); }
-            70%  { box-shadow: 0 0 0 9px rgba(39,174,96,0); }
-            100% { box-shadow: 0 0 0 0 rgba(39,174,96,0); }
+        .label-name {
+            color: white;
+            font-size: 0.72em;
+            font-weight: 700;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.95), 0 0 8px rgba(0,0,0,0.7);
+            white-space: nowrap;
+            letter-spacing: 0.02em;
         }
-        .hotspot-card {
+        /* Tooltip card */
+        .label-tooltip {
             display: none;
             position: absolute;
             bottom: calc(100% + 10px);
             left: 50%;
             transform: translateX(-50%);
             background: white;
-            border-radius: 8px;
-            padding: 12px 14px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            width: 175px;
+            border-radius: 7px;
+            padding: 10px 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.2);
+            width: 155px;
             text-align: center;
             border: 1px solid #d1e0d7;
             z-index: 100;
         }
-        .hotspot-card.card-visible {
+        .label-tooltip.tooltip-visible {
             display: block;
         }
-        .hotspot-card::after {
+        .label-tooltip::after {
             content: '';
             position: absolute;
             top: 100%;
             left: 50%;
             transform: translateX(-50%);
-            border: 7px solid transparent;
+            border: 6px solid transparent;
             border-top-color: white;
         }
-        .hotspot-card h4 {
-            margin: 0 0 4px 0;
-            color: #1e5631;
-            font-size: 0.88em;
+        .label-tooltip em {
+            display: block;
+            color: #444;
+            margin-bottom: 7px;
+            font-size: 0.9em;
+            line-height: 1.3;
         }
-        .hotspot-card p {
-            margin: 0 0 8px 0;
-            color: #555;
-            font-size: 0.78em;
-            line-height: 1.4;
-        }
-        .hotspot-card a {
+        .label-tooltip a {
             display: inline-block;
             color: white;
             background-color: #27ae60;
             text-decoration: none;
-            font-size: 0.78em;
+            font-size: 0.8em;
             font-weight: bold;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 4px;
         }
-        .hotspot-card a:hover {
+        .label-tooltip a:hover {
             background-color: #1e8449;
         }
-        /* Card below — for hotspots near the top of the image */
-        .hotspot-card.card-below {
+        /* Tooltip below — for labels near the top of the image */
+        .label-tooltip.tooltip-below {
             bottom: auto;
             top: calc(100% + 10px);
         }
-        .hotspot-card.card-below::after {
+        .label-tooltip.tooltip-below::after {
             top: auto;
             bottom: 100%;
             border-top-color: transparent;
             border-bottom-color: white;
-        }
-        /* Card to the left — for hotspots near the right edge */
-        .hotspot-card.card-left {
-            left: auto;
-            right: calc(100% + 10px);
-            bottom: 50%;
-            transform: translateY(50%);
-        }
-        .hotspot-card.card-left::after {
-            top: 50%;
-            left: 100%;
-            bottom: auto;
-            transform: translateY(-50%);
-            border-top-color: transparent;
-            border-left-color: white;
         }
     </style>
 </head>
@@ -187,43 +179,73 @@
             <div class="hero-container">
                 <img src="images/the_lawn_at_the_bottom_of_the_garden.jpg" alt="The lawn at the bottom of the garden">
 
-                <!-- Rowan Tree — tall deciduous tree, upper centre background -->
-                <div class="plant-hotspot" style="left: 52%; top: 18%;">
-                    <div class="hotspot-marker"></div>
-                    <div class="hotspot-card card-below">
-                        <h4>Rowan Tree</h4>
-                        <p>Sorbus aucuparia &mdash; Native tree prized for red autumn berries</p>
-                        <a href="#rowan">View details &darr;</a>
-                    </div>
-                </div>
-
-                <!-- Ornamental Cherry — reddish/bronze foliage, left-centre -->
-                <div class="plant-hotspot" style="left: 38%; top: 33%;">
-                    <div class="hotspot-marker"></div>
-                    <div class="hotspot-card">
-                        <h4>Ornamental Cherry</h4>
-                        <p>Prunus &mdash; Spectacular spring blossom &amp; distinctive bark</p>
+                <!-- Ornamental Cherry — large dark-foliaged tree, upper-left -->
+                <div class="garden-label" style="left: 4%; top: 30%;">
+                    <div class="label-dot"></div>
+                    <span class="label-name">Ornamental Cherry</span>
+                    <div class="label-tooltip tooltip-below">
+                        <em>Prunus</em>
                         <a href="#ornamental-cherry">View details &darr;</a>
                     </div>
                 </div>
 
-                <!-- Yellow Azalea — vivid yellow-orange flowers, centre-right -->
-                <div class="plant-hotspot" style="left: 65%; top: 48%;">
-                    <div class="hotspot-marker"></div>
-                    <div class="hotspot-card">
-                        <h4>Yellow Azalea</h4>
-                        <p>Rhododendron luteum &mdash; Fragrant yellow flowers in late spring</p>
-                        <a href="#azalea">View details &darr;</a>
+                <!-- Rowan Tree — tall light-green tree, upper centre -->
+                <div class="garden-label" style="left: 46%; top: 18%;">
+                    <div class="label-dot"></div>
+                    <span class="label-name">Rowan Tree</span>
+                    <div class="label-tooltip tooltip-below">
+                        <em>Sorbus aucuparia</em>
+                        <a href="#rowan">View details &darr;</a>
                     </div>
                 </div>
 
-                <!-- Weigela — pink/red flowering shrub, far right -->
-                <div class="plant-hotspot" style="left: 87%; top: 52%;">
-                    <div class="hotspot-marker"></div>
-                    <div class="hotspot-card card-left">
-                        <h4>Weigela</h4>
-                        <p>Hardy deciduous shrub &mdash; Vibrant red-pink spring flowers</p>
+                <!-- Orange Ball Tree — centre, between Rowan and flowering shrubs -->
+                <div class="garden-label" style="left: 52%; top: 34%;">
+                    <div class="label-dot"></div>
+                    <span class="label-name">Orange Ball Tree</span>
+                    <div class="label-tooltip tooltip-below">
+                        <em>Buddleja globosa</em>
+                        <a href="#orange-ball">View details &darr;</a>
+                    </div>
+                </div>
+
+                <!-- Plum Tree — upper-right background, text flows left -->
+                <div class="garden-label label-flip" style="right: 24%; top: 23%;">
+                    <div class="label-dot"></div>
+                    <span class="label-name">Plum Tree</span>
+                    <div class="label-tooltip tooltip-below">
+                        <em>Prunus domestica</em>
+                        <a href="#plum">View details &darr;</a>
+                    </div>
+                </div>
+
+                <!-- Weigela — pink/red flowering shrub, centre -->
+                <div class="garden-label" style="left: 44%; top: 49%;">
+                    <div class="label-dot"></div>
+                    <span class="label-name">Weigela</span>
+                    <div class="label-tooltip">
+                        <em>Weigela florida</em>
                         <a href="#weigela">View details &darr;</a>
+                    </div>
+                </div>
+
+                <!-- Hebe — rounded green hedge, lower-left -->
+                <div class="garden-label" style="left: 16%; top: 57%;">
+                    <div class="label-dot"></div>
+                    <span class="label-name">Hebe (Shrubby Veronica)</span>
+                    <div class="label-tooltip">
+                        <em>Veronica (Hebe)</em>
+                        <a href="#hebe">View details &darr;</a>
+                    </div>
+                </div>
+
+                <!-- Deciduous Azalea — yellow-orange flowers, right of centre, text flows left -->
+                <div class="garden-label label-flip" style="right: 30%; top: 44%;">
+                    <div class="label-dot"></div>
+                    <span class="label-name">Deciduous Azalea</span>
+                    <div class="label-tooltip">
+                        <em>Rhododendron luteum</em>
+                        <a href="#azalea">View details &darr;</a>
                     </div>
                 </div>
             </div>
@@ -386,25 +408,25 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.plant-hotspot').forEach(function (hotspot) {
+            document.querySelectorAll('.garden-label').forEach(function (label) {
                 var timer;
-                var card = hotspot.querySelector('.hotspot-card');
+                var tooltip = label.querySelector('.label-tooltip');
 
                 function show() {
                     clearTimeout(timer);
-                    card.classList.add('card-visible');
+                    tooltip.classList.add('tooltip-visible');
                 }
 
                 function hide() {
                     timer = setTimeout(function () {
-                        card.classList.remove('card-visible');
+                        tooltip.classList.remove('tooltip-visible');
                     }, 200);
                 }
 
-                hotspot.addEventListener('mouseenter', show);
-                hotspot.addEventListener('mouseleave', hide);
-                card.addEventListener('mouseenter', show);
-                card.addEventListener('mouseleave', hide);
+                label.addEventListener('mouseenter', show);
+                label.addEventListener('mouseleave', hide);
+                tooltip.addEventListener('mouseenter', show);
+                tooltip.addEventListener('mouseleave', hide);
             });
         });
     </script>
